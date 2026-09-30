@@ -23,12 +23,12 @@ public class ClientDocument {
     private String document;
     @Column("document_type")
     private String documentType;
-    @Column("planType")
+    @Column("plan_type")
     private String planType;
     @Column("balance")
     private float balance;
-    @Column("limit")
-    private float limit;
+    @Column("credit_limit")
+    private float credit_limit;
     @Column("active")
     private boolean active;
 }

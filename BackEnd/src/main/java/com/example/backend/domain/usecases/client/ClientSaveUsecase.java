@@ -14,10 +14,6 @@ public class ClientSaveUsecase {
     }
 
     public void save(ClientEntity client){
-        try {
-            clientRepository.save(client);
-        }catch (Exception e){
-            return;
-        }
+        clientRepository.save(client);
     }
 }

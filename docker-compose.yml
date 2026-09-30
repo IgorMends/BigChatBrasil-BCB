@@ -19,15 +19,15 @@ services:
 
   backend:
     build:
-      context: ./backend         
+      context: ./Backend         
       dockerfile: Dockerfile
     container_name: backend-api
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/meubanco
-      SPRING_DATASOURCE_USERNAME: igor
-      SPRING_DATASOURCE_PASSWORD: senha123
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bcb_api_db
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
     depends_on:
       postgres:
         condition: service_healthy   

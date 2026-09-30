@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS client (
     name VARCHAR(255),
     document VARCHAR(255),
     document_type VARCHAR(255),
-    planType VARCHAR(255),
+    plan_type VARCHAR(255),
     balance REAL,
-    limit REAL,
+    credit_limit REAL,
     active BOOL
 );

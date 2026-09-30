@@ -13,13 +13,12 @@ import lombok.Setter;
 @Builder
 public class ClientEntity {
 
-    private String id;
     private String name;
     private String document;
     private String documentType;
     private String planType;
     private float balance;
-    private float limit;
+    private float creditLimit;
     private boolean active;
 
 }

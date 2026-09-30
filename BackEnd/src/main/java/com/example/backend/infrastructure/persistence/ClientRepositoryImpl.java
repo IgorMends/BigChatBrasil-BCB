@@ -6,6 +6,7 @@ import com.example.backend.domain.port.ClientRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public class ClientRepositoryImpl implements ClientRepository {
@@ -17,15 +18,14 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
-    public ClientEntity save(ClientEntity client){
-
-        ClientDocument entity = ClientMapper.toDocument(client);
-        ClientDocument saved = springDataClientRepository.save(entity);
+    public ClientEntity save(ClientEntity client) {
+        ClientDocument doc = ClientMapper.toDocument(client);   // id = null -> INSERT
+        ClientDocument saved = springDataClientRepository.save(doc);
         return ClientMapper.toDomain(saved);
     }
 
     @Override
-    public Optional<ClientEntity> findById(String id){
+    public Optional<ClientEntity> findById(String id) {
         return springDataClientRepository.findById(id).map(ClientMapper::toDomain);
     }
 }

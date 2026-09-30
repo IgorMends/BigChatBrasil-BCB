@@ -15,7 +15,7 @@ public class ClientController {
     private final ClientSaveUsecase clientSaveUsecase;
 
     //Response Entity deve retornar o DTO
-    @PostMapping("save")
+    @PostMapping("/save")
     public ResponseEntity<Void> saveClient(@RequestBody ClientEntity client){
 
         clientSaveUsecase.save(client);
