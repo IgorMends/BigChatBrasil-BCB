@@ -1,27 +1,28 @@
 package com.example.backend.domain.usecases.client;
 
 import com.example.backend.application.DTO.apiMappers.ClientApiMapper;
-import com.example.backend.application.DTO.request.ClientRequestDTO;
 import com.example.backend.application.DTO.response.ClientResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
+import com.example.backend.domain.exeptions.ClientNotFoundException;
 import com.example.backend.domain.port.ClientRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
-public class ClientSaveUsecase {
+public class ClientFindByIdUsecase {
 
     private final ClientRepository clientRepository;
 
-    public ClientSaveUsecase(ClientRepository clientRepository){
+    public ClientFindByIdUsecase(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
-    public ClientResponseDTO save(ClientRequestDTO client){
+    public ClientResponseDTO findById(UUID id) {
 
-        ClientEntity entity = ClientApiMapper.toDomain(client);
+        ClientEntity entity = clientRepository.findById(id)
+                .orElseThrow(() -> new ClientNotFoundException(id));
 
-        ClientResponseDTO response = ClientApiMapper.toResponseDTO(clientRepository.save(entity));
-
-        return response;
+        return ClientApiMapper.toResponseDTO(entity);
     }
 }

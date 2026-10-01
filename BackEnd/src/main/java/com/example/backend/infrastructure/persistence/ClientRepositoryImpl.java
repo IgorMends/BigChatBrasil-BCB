@@ -1,10 +1,11 @@
 package com.example.backend.infrastructure.persistence;
 
-import com.example.backend.application.DTO.ClientMapper;
+import com.example.backend.infrastructure.persistence.infraMappers.ClientMapper;
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.domain.port.ClientRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,7 +26,14 @@ public class ClientRepositoryImpl implements ClientRepository {
     }
 
     @Override
-    public Optional<ClientEntity> findById(String id) {
+    public Optional<ClientEntity> findById(UUID id) {
         return springDataClientRepository.findById(id).map(ClientMapper::toDomain);
+    }
+
+    @Override
+    public List<ClientEntity> findAll() {
+        List<ClientEntity> clients = new java.util.ArrayList<>();
+        springDataClientRepository.findAll().forEach(doc -> clients.add(ClientMapper.toDomain(doc)));
+        return clients;
     }
 }

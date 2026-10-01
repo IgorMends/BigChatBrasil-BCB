@@ -1,4 +1,4 @@
-package com.example.backend.domain.entity;
+package com.example.backend.application.DTO.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,16 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ClientEntity {
+public class ClientRequestDTO {
 
-    private UUID id;
     private String name;
     private String document;
     private String documentType;
@@ -23,5 +20,4 @@ public class ClientEntity {
     private float balance;
     private float creditLimit;
     private boolean active;
-
 }

@@ -1,5 +1,7 @@
 package com.example.backend.application.controllers;
 
+import com.example.backend.application.DTO.request.ClientRequestDTO;
+import com.example.backend.application.DTO.response.ClientResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.domain.usecases.client.ClientSaveUsecase;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +16,12 @@ public class ClientController {
 
     private final ClientSaveUsecase clientSaveUsecase;
 
-    //Response Entity deve retornar o DTO
     @PostMapping("/save")
-    public ResponseEntity<Void> saveClient(@RequestBody ClientEntity client){
+    public ResponseEntity<ClientResponseDTO> saveClient(@RequestBody ClientRequestDTO client){
 
-        clientSaveUsecase.save(client);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+        ClientResponseDTO response = clientSaveUsecase.save(client);
+
+        return ResponseEntity.ok(response);
     }
 }

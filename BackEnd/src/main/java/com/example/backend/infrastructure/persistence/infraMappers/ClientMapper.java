@@ -1,13 +1,12 @@
-package com.example.backend.application.DTO;
+package com.example.backend.infrastructure.persistence.infraMappers;
 
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.infrastructure.persistence.ClientDocument;
 
-import java.util.UUID;
-
 public class ClientMapper {
     public static ClientEntity toDomain(ClientDocument document){
         return new ClientEntity(
+                document.getId(),
                 document.getName(),
                 document.getDocument(),
                 document.getDocumentType(),
@@ -22,7 +21,7 @@ public class ClientMapper {
 
 
         return new ClientDocument(
-                null,
+                entity.getId(),
                 entity.getName(),
                 entity.getDocument(),
                 entity.getDocumentType(),
