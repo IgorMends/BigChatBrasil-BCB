@@ -20,7 +20,7 @@ public class ClientListUsecase {
 
         return clientRepository.findAll()
                 .stream()
-                .map(ClientApiMapper::toResponseDTO)
+                .map(ClientApiMapper::toSaveResponseDTO)
                 .toList();
     }
 }

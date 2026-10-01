@@ -24,6 +24,6 @@ public class ClientBalanceUsecase {
                 .orElseThrow(() -> new ClientNotFoundException(id));
 
         //Melhorar DTO para retornar apenas o balance
-        return ClientApiMapper.toResponseDTO(entity);
+        return ClientApiMapper.toSaveResponseDTO(entity);
     }
 }

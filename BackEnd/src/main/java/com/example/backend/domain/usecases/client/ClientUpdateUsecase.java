@@ -34,6 +34,6 @@ public class ClientUpdateUsecase {
 
         ClientEntity salvo = clientRepository.save(existente);
 
-        return ClientApiMapper.toResponseDTO(salvo);
+        return ClientApiMapper.toSaveResponseDTO(salvo);
     }
 }

@@ -18,10 +18,22 @@ public class ClientApiMapper {
                 .build();
     }
 
-    public static ClientResponseDTO toResponseDTO(ClientEntity entity) {
+    public static ClientResponseDTO toSaveResponseDTO(ClientEntity entity) {
         return ClientResponseDTO.builder()
                 .id(entity.getId())
                 .name(entity.getName())
+                .build();
+    }
+
+    public static ClientResponseDTO toFindResponseDTO(ClientEntity entity) {
+        return ClientResponseDTO.builder()
+                .name(entity.getName())
+                .document(entity.getDocument())
+                .documentType(entity.getDocumentType())
+                .planType(entity.getPlanType())
+                .balance(entity.getBalance())
+                .creditLimit(entity.getCreditLimit())
+                .active(entity.isActive())
                 .build();
     }
 }

@@ -23,6 +23,6 @@ public class ClientFindByIdUsecase {
         ClientEntity entity = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
 
-        return ClientApiMapper.toResponseDTO(entity);
+        return ClientApiMapper.toFindResponseDTO(entity);
     }
 }

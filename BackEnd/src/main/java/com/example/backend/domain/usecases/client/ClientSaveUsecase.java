@@ -20,7 +20,7 @@ public class ClientSaveUsecase {
 
         ClientEntity entity = ClientApiMapper.toDomain(client);
 
-        ClientResponseDTO response = ClientApiMapper.toResponseDTO(clientRepository.save(entity));
+        ClientResponseDTO response = ClientApiMapper.toSaveResponseDTO(clientRepository.save(entity));
 
         return response;
     }
