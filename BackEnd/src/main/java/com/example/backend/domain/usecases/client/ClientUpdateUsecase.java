@@ -1,8 +1,8 @@
 package com.example.backend.domain.usecases.client;
 
 import com.example.backend.application.DTO.apiMappers.ClientApiMapper;
-import com.example.backend.application.DTO.request.ClientRequestDTO;
-import com.example.backend.application.DTO.response.ClientResponseDTO;
+import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
+import com.example.backend.application.DTO.response.client.ClientResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.domain.exeptions.ClientNotFoundException;
 import com.example.backend.domain.port.ClientRepository;
@@ -19,7 +19,7 @@ public class ClientUpdateUsecase {
         this.clientRepository = clientRepository;
     }
 
-    public ClientResponseDTO update(UUID id, ClientRequestDTO dadosAtualizados) {
+    public ClientResponseDTO update(UUID id, ClientSaveRequestDTO dadosAtualizados) {
 
         ClientEntity existente = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));

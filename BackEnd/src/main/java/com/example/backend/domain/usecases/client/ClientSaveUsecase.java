@@ -1,8 +1,8 @@
 package com.example.backend.domain.usecases.client;
 
 import com.example.backend.application.DTO.apiMappers.ClientApiMapper;
-import com.example.backend.application.DTO.request.ClientRequestDTO;
-import com.example.backend.application.DTO.response.ClientResponseDTO;
+import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
+import com.example.backend.application.DTO.response.client.ClientResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.domain.port.ClientRepository;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class ClientSaveUsecase {
         this.clientRepository = clientRepository;
     }
 
-    public ClientResponseDTO save(ClientRequestDTO client){
+    public ClientResponseDTO save(ClientSaveRequestDTO client){
 
         ClientEntity entity = ClientApiMapper.toDomain(client);
 

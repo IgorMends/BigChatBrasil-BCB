@@ -24,4 +24,7 @@ public class ClientEntity {
     private float creditLimit;
     private boolean active;
 
+    public void deactivate() {
+        this.active = false;
+    }
 }

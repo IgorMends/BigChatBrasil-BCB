@@ -1,12 +1,14 @@
 package com.example.backend.application.DTO.apiMappers;
 
-import com.example.backend.application.DTO.request.ClientRequestDTO;
-import com.example.backend.application.DTO.response.ClientResponseDTO;
+import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
+import com.example.backend.application.DTO.response.client.ClientBalanceResponseDTO;
+import com.example.backend.application.DTO.response.client.ClientFindResponseDTO;
+import com.example.backend.application.DTO.response.client.ClientResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
 
 public class ClientApiMapper {
 
-    public static ClientEntity toDomain(ClientRequestDTO dto) {
+    public static ClientEntity toDomain(ClientSaveRequestDTO dto) {
         return ClientEntity.builder()
                 .name(dto.getName())
                 .document(dto.getDocument())
@@ -25,8 +27,8 @@ public class ClientApiMapper {
                 .build();
     }
 
-    public static ClientResponseDTO toFindResponseDTO(ClientEntity entity) {
-        return ClientResponseDTO.builder()
+    public static ClientFindResponseDTO toFindResponseDTO(ClientEntity entity) {
+        return ClientFindResponseDTO.builder()
                 .name(entity.getName())
                 .document(entity.getDocument())
                 .documentType(entity.getDocumentType())
@@ -34,6 +36,12 @@ public class ClientApiMapper {
                 .balance(entity.getBalance())
                 .creditLimit(entity.getCreditLimit())
                 .active(entity.isActive())
+                .build();
+    }
+
+    public static ClientBalanceResponseDTO toBalanceResponseDTO(ClientEntity entity) {
+        return ClientBalanceResponseDTO.builder()
+                .balance(entity.getBalance())
                 .build();
     }
 }

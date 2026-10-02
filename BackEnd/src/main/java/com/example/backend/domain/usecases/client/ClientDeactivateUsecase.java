@@ -1,7 +1,5 @@
 package com.example.backend.domain.usecases.client;
 
-import com.example.backend.application.DTO.apiMappers.ClientApiMapper;
-import com.example.backend.application.DTO.response.client.ClientFindResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.domain.exeptions.ClientNotFoundException;
 import com.example.backend.domain.port.ClientRepository;
@@ -10,19 +8,20 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ClientFindByIdUsecase {
+public class ClientDeactivateUsecase {
 
     private final ClientRepository clientRepository;
 
-    public ClientFindByIdUsecase(ClientRepository clientRepository) {
+    public ClientDeactivateUsecase(ClientRepository clientRepository) {
         this.clientRepository = clientRepository;
     }
 
-    public ClientFindResponseDTO findById(UUID id) {
-
-        ClientEntity entity = clientRepository.findById(id)
+    public void deactivate(UUID id) {
+        ClientEntity client = clientRepository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
 
-        return ClientApiMapper.toFindResponseDTO(entity);
+        client.deactivate();
+
+        clientRepository.save(client);
     }
 }

@@ -20,7 +20,7 @@ public class ClientRepositoryImpl implements ClientRepository {
 
     @Override
     public ClientEntity save(ClientEntity client) {
-        ClientDocument doc = ClientMapper.toDocument(client);   // id = null -> INSERT
+        ClientDocument doc = ClientMapper.toDocument(client);
         ClientDocument saved = springDataClientRepository.save(doc);
         return ClientMapper.toDomain(saved);
     }
