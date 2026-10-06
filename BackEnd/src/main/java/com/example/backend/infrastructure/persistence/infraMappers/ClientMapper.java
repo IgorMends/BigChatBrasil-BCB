@@ -1,7 +1,7 @@
 package com.example.backend.infrastructure.persistence.infraMappers;
 
 import com.example.backend.domain.entity.ClientEntity;
-import com.example.backend.infrastructure.persistence.ClientDocument;
+import com.example.backend.infrastructure.persistence.client.ClientDocument;
 
 public class ClientMapper {
     public static ClientEntity toDomain(ClientDocument document){

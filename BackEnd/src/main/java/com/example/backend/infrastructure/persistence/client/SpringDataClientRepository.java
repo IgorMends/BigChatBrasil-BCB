@@ -1,4 +1,4 @@
-package com.example.backend.infrastructure.persistence;
+package com.example.backend.infrastructure.persistence.client;
 
 import org.springframework.data.repository.CrudRepository;
 

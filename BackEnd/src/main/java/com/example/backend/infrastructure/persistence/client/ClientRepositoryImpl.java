@@ -1,4 +1,4 @@
-package com.example.backend.infrastructure.persistence;
+package com.example.backend.infrastructure.persistence.client;
 
 import com.example.backend.infrastructure.persistence.infraMappers.ClientMapper;
 import com.example.backend.domain.entity.ClientEntity;

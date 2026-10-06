@@ -1,4 +1,4 @@
-package com.example.backend.infrastructure.persistence;
+package com.example.backend.infrastructure.persistence.client;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
