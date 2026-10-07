@@ -1,6 +1,6 @@
 package com.example.backend.infrastructure.persistence.client;
 
-import lombok.*;
+import  lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;

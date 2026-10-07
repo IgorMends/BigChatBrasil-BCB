@@ -1,4 +1,7 @@
 spring:
+  application:
+    name: BackEnd
+
   datasource:
     url: jdbc:postgresql://localhost:5433/bcb_api_db
     username: admin

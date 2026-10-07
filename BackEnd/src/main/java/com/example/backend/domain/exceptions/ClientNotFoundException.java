@@ -1,4 +1,4 @@
-package com.example.backend.domain.exeptions;
+package com.example.backend.domain.exceptions;
 
 import java.util.UUID;
 
