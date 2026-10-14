@@ -25,7 +25,6 @@ public class MessageSendUsecase {
 
     private static final BigDecimal NORMAL_COST = new BigDecimal("0.25");
     private static final BigDecimal URGENT_COST = new BigDecimal("0.50");
-    private static final long ESTIMATED_DELIVERY_SECONDS = 5;
 
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
@@ -45,7 +44,7 @@ public class MessageSendUsecase {
         MessageEntity message = messageRepository.save(MessageEntity.builder()
                 .conversationId(conversation.getId())
                 .senderId(clientId.toString())
-                .senderType("client")
+                .senderType("user")
                 .recipientId(conversation.getRecipientId())
                 .content(request.getContent())
                 .priority(priority)
@@ -69,7 +68,7 @@ public class MessageSendUsecase {
         return new SendMessageResponse(
                 message.getId(),
                 MessageApiMapper.lower(message.getStatus()),
-                now.plusSeconds(ESTIMATED_DELIVERY_SECONDS),
+                now,
                 cost,
                 currentBalance);
     }
