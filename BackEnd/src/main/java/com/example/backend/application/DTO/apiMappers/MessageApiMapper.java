@@ -27,7 +27,6 @@ public class MessageApiMapper {
         return new MessageStatusResponse(message.getId(), lower(message.getStatus()));
     }
 
-    // A API expõe em minúsculas (normal, queued...), como no enunciado
     public static String lower(Enum<?> value) {
         return value == null ? null : value.name().toLowerCase();
     }

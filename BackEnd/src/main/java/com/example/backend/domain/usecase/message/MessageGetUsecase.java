@@ -1,4 +1,4 @@
-package com.example.backend.domain.usecases.message;
+package com.example.backend.domain.usecase.message;
 
 import com.example.backend.application.DTO.apiMappers.MessageApiMapper;
 import com.example.backend.application.DTO.response.message.MessageResponse;

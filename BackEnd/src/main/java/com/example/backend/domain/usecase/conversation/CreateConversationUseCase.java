@@ -24,7 +24,6 @@ public class CreateConversationUseCase {
         return ConversationApiMapper.toResponseDTO(conversationRepository.findByClientIdAndRecipientId(clientId, dto.getRecipientId())
                 .orElseGet(() -> conversationRepository.save(
                         ConversationEntity.builder()
-                                .id(UUID.randomUUID())
                                 .clientId(clientId)
                                 .recipientId(dto.getRecipientId())
                                 .recipientName(dto.getRecipientName())

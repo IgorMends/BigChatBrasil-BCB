@@ -20,7 +20,6 @@ public class SendMessageResponse {
     private LocalDateTime estimatedDelivery;
     private BigDecimal cost;
 
-    // Apenas para pré-pago
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private BigDecimal currentBalance;
 }
