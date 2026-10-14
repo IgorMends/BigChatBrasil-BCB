@@ -4,7 +4,7 @@ import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
 import com.example.backend.application.DTO.response.client.ClientBalanceResponseDTO;
 import com.example.backend.application.DTO.response.client.ClientFindResponseDTO;
 import com.example.backend.application.DTO.response.client.ClientResponseDTO;
-import com.example.backend.domain.usecases.client.*;
+import com.example.backend.domain.usecase.client.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

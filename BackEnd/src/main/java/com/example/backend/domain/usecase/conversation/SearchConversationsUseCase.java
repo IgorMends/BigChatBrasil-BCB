@@ -1,8 +1,7 @@
-package com.example.backend.domain.usecases.conversation;
+package com.example.backend.domain.usecase.conversation;
 
 import com.example.backend.application.DTO.apiMappers.ConversationApiMapper;
 import com.example.backend.application.DTO.response.conversation.ConversationResponseDTO;
-import com.example.backend.domain.entity.ConversationEntity;
 import com.example.backend.domain.port.ConversationRepository;
 import org.springframework.stereotype.Service;
 

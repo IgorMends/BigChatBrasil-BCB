@@ -1,0 +1,103 @@
+package com.example.backend.domain.usecases.message;
+
+import com.example.backend.application.DTO.apiMappers.MessageApiMapper;
+import com.example.backend.application.DTO.request.message.SendMessageRequest;
+import com.example.backend.application.DTO.response.message.SendMessageResponse;
+import com.example.backend.domain.entity.ConversationEntity;
+import com.example.backend.domain.entity.MessageEntity;
+import com.example.backend.domain.entity.enums.MessagePriority;
+import com.example.backend.domain.entity.enums.MessageStatus;
+import com.example.backend.domain.exception.ResourceNotFoundException;
+import com.example.backend.domain.port.ConversationRepository;
+import com.example.backend.domain.port.MessageQueue;
+import com.example.backend.domain.port.MessageRepository;
+//import com.example.backend.domain.usecases.transaction.TransactionChargeClientUsecase;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@RequiredArgsConstructor
+public class MessageSendUsecase {
+
+    private static final BigDecimal NORMAL_COST = new BigDecimal("0.25");
+    private static final BigDecimal URGENT_COST = new BigDecimal("0.50");
+    private static final long ESTIMATED_DELIVERY_SECONDS = 5;
+
+    private final ConversationRepository conversationRepository;
+    private final MessageRepository messageRepository;
+    //private final TransactionChargeClientUsecase chargeClientUsecase;
+    private final MessageQueue messageQueue;
+
+    // Salvar mensagem, cobrar e atualizar a conversa acontecem na mesma transação:
+    // se a cobrança falhar (saldo/limite insuficiente), nada é gravado.
+    @Transactional
+    public SendMessageResponse execute(UUID clientId, SendMessageRequest request) {
+        MessagePriority priority = parsePriority(request.getPriority());
+        BigDecimal cost = costOf(priority);
+        LocalDateTime now = LocalDateTime.now();
+
+        ConversationEntity conversation = findOrCreateConversation(clientId, request);
+
+        MessageEntity message = messageRepository.save(MessageEntity.builder()
+                .conversationId(conversation.getId())
+                .senderId(clientId.toString())
+                .senderType("client")
+                .recipientId(conversation.getRecipientId())
+                .content(request.getContent())
+                .priority(priority)
+                .status(MessageStatus.QUEUED)
+                .cost(cost)
+                .createdAt(now)
+                .build());
+
+        // Valida saldo/limite, debita e registra a transação (com o id da mensagem).
+        // Devolve o saldo atual no pré-pago e nulo no pós-pago.
+        //BigDecimal currentBalance = chargeClientUsecase.execute(clientId, cost, message.getId());
+
+        BigDecimal currentBalance = new BigDecimal("1.500");
+
+        conversation.setLastMessageContent(message.getContent());
+        conversation.setLastMessageTime(now);
+        conversationRepository.save(conversation);
+
+        messageQueue.enqueue(message);
+
+        return new SendMessageResponse(
+                message.getId(),
+                MessageApiMapper.lower(message.getStatus()),
+                now.plusSeconds(ESTIMATED_DELIVERY_SECONDS),
+                cost,
+                currentBalance);
+    }
+
+    private ConversationEntity findOrCreateConversation(UUID clientId, SendMessageRequest request) {
+        if (request.getConversationId() != null) {
+            return conversationRepository.findByIdAndClientId(request.getConversationId(), clientId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Conversa não encontrada"));
+        }
+
+        if (request.getRecipientId() == null || request.getRecipientId().isBlank()) {
+            throw new IllegalArgumentException("Informe conversationId ou recipientId");
+        }
+
+        return conversationRepository.findByClientIdAndRecipientId(clientId, request.getRecipientId())
+                .orElseGet(() -> conversationRepository.save(ConversationEntity.builder()
+                        .clientId(clientId)
+                        .recipientId(request.getRecipientId())
+                        .recipientName(request.getRecipientName())
+                        .unreadCount(0)
+                        .build()));
+    }
+
+    private MessagePriority parsePriority(String priority) {
+        return priority == null ? MessagePriority.NORMAL : MessagePriority.valueOf(priority.toUpperCase());
+    }
+
+    private BigDecimal costOf(MessagePriority priority) {
+        return priority == MessagePriority.URGENT ? URGENT_COST : NORMAL_COST;
+    }
+}

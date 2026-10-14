@@ -1,10 +1,10 @@
-package com.example.backend.domain.usecases.client;
+package com.example.backend.domain.usecase.client;
 
 import com.example.backend.application.DTO.apiMappers.ClientApiMapper;
 import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
 import com.example.backend.application.DTO.response.client.ClientResponseDTO;
 import com.example.backend.domain.entity.ClientEntity;
-import com.example.backend.domain.exceptions.ClientNotFoundException;
+import com.example.backend.domain.exception.ClientNotFoundException;
 import com.example.backend.domain.port.ClientRepository;
 import org.springframework.stereotype.Service;
 

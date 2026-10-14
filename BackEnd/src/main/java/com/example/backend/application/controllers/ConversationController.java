@@ -2,7 +2,7 @@ package com.example.backend.application.controllers;
 
 import com.example.backend.application.DTO.request.conversation.ConversationCreateRequestDTO;
 import com.example.backend.application.DTO.response.conversation.ConversationResponseDTO;
-import com.example.backend.domain.usecases.conversation.*;
+import com.example.backend.domain.usecase.conversation.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

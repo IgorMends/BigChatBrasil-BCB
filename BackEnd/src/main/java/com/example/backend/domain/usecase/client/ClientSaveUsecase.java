@@ -1,4 +1,4 @@
-package com.example.backend.domain.usecases.client;
+package com.example.backend.domain.usecase.client;
 
 import com.example.backend.application.DTO.apiMappers.ClientApiMapper;
 import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;

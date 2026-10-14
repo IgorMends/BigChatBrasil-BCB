@@ -1,4 +1,4 @@
-package com.example.backend.domain.usecases.conversation;
+package com.example.backend.domain.usecase.conversation;
 
 import com.example.backend.application.DTO.apiMappers.ConversationApiMapper;
 import com.example.backend.application.DTO.request.conversation.ConversationCreateRequestDTO;
