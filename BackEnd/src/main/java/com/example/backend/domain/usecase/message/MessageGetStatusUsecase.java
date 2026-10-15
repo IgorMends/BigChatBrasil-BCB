@@ -1,7 +1,7 @@
 package com.example.backend.domain.usecase.message;
 
 import com.example.backend.application.DTO.apiMappers.MessageApiMapper;
-import com.example.backend.application.DTO.response.message.MessageStatusResponse;
+import com.example.backend.application.DTO.response.message.MessageStatusResponseDTO;
 import com.example.backend.domain.exception.ResourceNotFoundException;
 import com.example.backend.domain.port.MessageRepository;
 import java.util.UUID;
@@ -14,7 +14,7 @@ public class MessageGetStatusUsecase {
 
     private final MessageRepository messageRepository;
 
-    public MessageStatusResponse execute(UUID clientId, UUID messageId) {
+    public MessageStatusResponseDTO execute(UUID clientId, UUID messageId) {
         return messageRepository.findByIdAndClientId(messageId, clientId)
                 .map(MessageApiMapper::toStatusResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Mensagem não encontrada"));

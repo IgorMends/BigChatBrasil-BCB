@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,10 +28,10 @@ public class ClientSaveRequestDTO {
     private String planType;
     @NotNull
     @PositiveOrZero
-    private float balance;
+    private BigDecimal balance;
     @NotNull
     @PositiveOrZero
-    private float creditLimit;
+    private BigDecimal creditLimit;
     @NotNull
     private boolean active;
 }

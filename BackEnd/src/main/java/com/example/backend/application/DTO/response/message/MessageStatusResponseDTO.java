@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageStatusResponse {
+public class MessageStatusResponseDTO {
 
     private UUID id;
     private String status;

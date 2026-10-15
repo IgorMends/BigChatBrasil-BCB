@@ -12,7 +12,7 @@ public class ClientMapper {
                 document.getDocumentType(),
                 document.getPlanType(),
                 document.getBalance(),
-                document.getCredit_limit(),
+                document.getCreditLimit(),
                 document.isActive()
         );
     }

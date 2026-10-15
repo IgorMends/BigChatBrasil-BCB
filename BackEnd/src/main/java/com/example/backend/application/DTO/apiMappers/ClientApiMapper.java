@@ -1,9 +1,7 @@
 package com.example.backend.application.DTO.apiMappers;
 
 import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
-import com.example.backend.application.DTO.response.client.ClientBalanceResponseDTO;
-import com.example.backend.application.DTO.response.client.ClientFindResponseDTO;
-import com.example.backend.application.DTO.response.client.ClientResponseDTO;
+import com.example.backend.application.DTO.response.client.*;
 import com.example.backend.domain.entity.ClientEntity;
 
 public class ClientApiMapper {
@@ -42,6 +40,24 @@ public class ClientApiMapper {
     public static ClientBalanceResponseDTO toBalanceResponseDTO(ClientEntity entity) {
         return ClientBalanceResponseDTO.builder()
                 .balance(entity.getBalance())
+                .build();
+    }
+
+    public static ClientCreditAdjustResponseDTO toCreditAdjustResponseDTO(ClientEntity entity) {
+        return ClientCreditAdjustResponseDTO.builder()
+                .id(entity.getId())
+                .planType(entity.getPlanType())
+                .balance(entity.getBalance())
+                .creditLimit(entity.getCreditLimit())
+                .build();
+    }
+
+    public static ClientAuthResponseDTO toAuthResponseDTO(ClientEntity entity) {
+        return ClientAuthResponseDTO.builder()
+                .id(entity.getId())
+                .name(entity.getName())
+                .documentType(entity.getDocumentType())
+                .planType(entity.getPlanType())
                 .build();
     }
 }

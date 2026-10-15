@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Table("client")
@@ -26,9 +27,9 @@ public class ClientDocument {
     @Column("plan_type")
     private String planType;
     @Column("balance")
-    private float balance;
+    private BigDecimal balance;
     @Column("credit_limit")
-    private float credit_limit;
+    private BigDecimal creditLimit;
     @Column("active")
     private boolean active;
 }

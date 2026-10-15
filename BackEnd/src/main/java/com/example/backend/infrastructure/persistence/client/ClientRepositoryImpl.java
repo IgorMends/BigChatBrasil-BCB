@@ -36,4 +36,14 @@ public class ClientRepositoryImpl implements ClientRepository {
         springDataClientRepository.findAll().forEach(doc -> clients.add(ClientMapper.toDomain(doc)));
         return clients;
     }
+
+    @Override
+    public Optional<ClientEntity> findByIdForUpdate(UUID id) {
+        return springDataClientRepository.findByIdForUpdate(id).map(ClientMapper::toDomain);
+    }
+
+    @Override
+    public Optional<ClientEntity> findByDocument(String document) {
+        return springDataClientRepository.findByDocument(document).map(ClientMapper::toDomain);
+    }
 }

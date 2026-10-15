@@ -2,6 +2,7 @@ package com.example.backend.application.controllers;
 
 import com.example.backend.application.DTO.request.conversation.ConversationCreateRequestDTO;
 import com.example.backend.application.DTO.response.conversation.ConversationResponseDTO;
+import com.example.backend.application.security.CurrentClient;
 import com.example.backend.domain.usecase.conversation.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/conversations")
+@RequestMapping("/conversation")
 @RequiredArgsConstructor
 public class ConversationController {
 
@@ -24,7 +25,7 @@ public class ConversationController {
 
     @GetMapping
     public ResponseEntity<List<ConversationResponseDTO>> list(
-            @RequestParam UUID clientId,
+            @CurrentClient UUID clientId,
             @RequestParam(required = false) String search) {
 
         List<ConversationResponseDTO> response = (search == null || search.isBlank())
@@ -37,7 +38,7 @@ public class ConversationController {
     @GetMapping("/{id}")
     public ResponseEntity<ConversationResponseDTO> findById(
             @PathVariable UUID id,
-            @RequestParam UUID clientId) {
+            @CurrentClient UUID clientId) {
 
         ConversationResponseDTO response = getConversationUseCase.execute(id, clientId);
 
@@ -46,7 +47,7 @@ public class ConversationController {
 
     @PostMapping
     public ResponseEntity<ConversationResponseDTO> create(
-            @RequestParam UUID clientId,
+            @CurrentClient UUID clientId,
             @Valid @RequestBody ConversationCreateRequestDTO dto) {
 
         ConversationResponseDTO response = createConversationUseCase.execute(clientId, dto);
@@ -57,7 +58,7 @@ public class ConversationController {
     @PatchMapping("/{id}/read")
     public ResponseEntity<ConversationResponseDTO> markAsRead(
             @PathVariable UUID id,
-            @RequestParam UUID clientId) {
+            @CurrentClient UUID clientId) {
 
         ConversationResponseDTO response = markConversationAsReadUseCase.execute(id, clientId);
 

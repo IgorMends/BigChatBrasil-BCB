@@ -11,4 +11,6 @@ public interface ClientRepository {
     ClientEntity save(ClientEntity client);
     Optional<ClientEntity> findById(UUID id);
     List<ClientEntity> findAll();
+    Optional<ClientEntity> findByIdForUpdate(UUID id);
+    Optional<ClientEntity> findByDocument(String document);
 }

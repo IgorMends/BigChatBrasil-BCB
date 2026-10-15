@@ -1,5 +1,6 @@
 package com.example.backend.application.DTO.response.message;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -12,16 +13,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MessageResponse {
+public class SendMessageResponseDTO {
 
     private UUID id;
-    private UUID conversationId;
-    private String senderId;
-    private String senderType;
-    private String recipientId;
-    private String content;
-    private LocalDateTime timestamp;
-    private String priority;
     private String status;
+    private LocalDateTime estimatedDelivery;
     private BigDecimal cost;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private BigDecimal currentBalance;
 }

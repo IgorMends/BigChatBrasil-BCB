@@ -1,8 +1,8 @@
 package com.example.backend.domain.usecase.message;
 
 import com.example.backend.application.DTO.apiMappers.MessageApiMapper;
-import com.example.backend.application.DTO.request.message.SendMessageRequest;
-import com.example.backend.application.DTO.response.message.SendMessageResponse;
+import com.example.backend.application.DTO.request.message.SendMessageRequestDTO;
+import com.example.backend.application.DTO.response.message.SendMessageResponseDTO;
 import com.example.backend.domain.entity.ConversationEntity;
 import com.example.backend.domain.entity.MessageEntity;
 import com.example.backend.domain.entity.enums.MessagePriority;
@@ -15,6 +15,8 @@ import com.example.backend.domain.port.MessageRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
+import com.example.backend.domain.usecase.transaction.TransactionChargeClientUsecase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,13 +30,11 @@ public class MessageSendUsecase {
 
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
-    //private final TransactionChargeClientUsecase chargeClientUsecase;
+    private final TransactionChargeClientUsecase chargeClientUsecase;
     private final MessageQueue messageQueue;
 
-    // Salvar mensagem, cobrar e atualizar a conversa acontecem na mesma transação:
-    // se a cobrança falhar (saldo/limite insuficiente), nada é gravado.
     @Transactional
-    public SendMessageResponse execute(UUID clientId, SendMessageRequest request) {
+    public SendMessageResponseDTO execute(UUID clientId, SendMessageRequestDTO request) {
         MessagePriority priority = parsePriority(request.getPriority());
         BigDecimal cost = costOf(priority);
         LocalDateTime now = LocalDateTime.now();
@@ -53,11 +53,7 @@ public class MessageSendUsecase {
                 .createdAt(now)
                 .build());
 
-        // Valida saldo/limite, debita e registra a transação (com o id da mensagem).
-        // Devolve o saldo atual no pré-pago e nulo no pós-pago.
-        //BigDecimal currentBalance = chargeClientUsecase.execute(clientId, cost, message.getId());
-
-        BigDecimal currentBalance = new BigDecimal("1.500");
+        BigDecimal currentBalance = chargeClientUsecase.execute(clientId, cost, message.getId());
 
         conversation.setLastMessageContent(message.getContent());
         conversation.setLastMessageTime(now);
@@ -65,7 +61,7 @@ public class MessageSendUsecase {
 
         messageQueue.enqueue(message);
 
-        return new SendMessageResponse(
+        return new SendMessageResponseDTO(
                 message.getId(),
                 MessageApiMapper.lower(message.getStatus()),
                 now,
@@ -73,7 +69,7 @@ public class MessageSendUsecase {
                 currentBalance);
     }
 
-    private ConversationEntity findOrCreateConversation(UUID clientId, SendMessageRequest request) {
+    private ConversationEntity findOrCreateConversation(UUID clientId, SendMessageRequestDTO request) {
         if (request.getConversationId() != null) {
             return conversationRepository.findByIdAndClientId(request.getConversationId(), clientId)
                     .orElseThrow(() -> new ResourceNotFoundException("Conversa não encontrada"));
