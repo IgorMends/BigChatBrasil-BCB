@@ -18,6 +18,9 @@ server:
 
 app:
   admin-token: ${ADMIN_TOKEN}
+  queue:
+    poll-interval-ms: 15000
+    failure-rate: 0.1
 
 logging:
   level:

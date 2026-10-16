@@ -11,7 +11,6 @@ import com.example.backend.domain.exception.ResourceNotFoundException;
 import com.example.backend.domain.port.ConversationRepository;
 import com.example.backend.domain.port.MessageQueue;
 import com.example.backend.domain.port.MessageRepository;
-//import com.example.backend.domain.usecases.transaction.TransactionChargeClientUsecase;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -20,6 +19,8 @@ import com.example.backend.domain.usecase.transaction.TransactionChargeClientUse
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +45,7 @@ public class MessageSendUsecase {
         MessageEntity message = messageRepository.save(MessageEntity.builder()
                 .conversationId(conversation.getId())
                 .senderId(clientId.toString())
-                .senderType("user")
+                .senderType("client")
                 .recipientId(conversation.getRecipientId())
                 .content(request.getContent())
                 .priority(priority)
@@ -59,12 +60,17 @@ public class MessageSendUsecase {
         conversation.setLastMessageTime(now);
         conversationRepository.save(conversation);
 
-        messageQueue.enqueue(message);
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                messageQueue.enqueue(message);
+            }
+        });
 
         return new SendMessageResponseDTO(
                 message.getId(),
                 MessageApiMapper.lower(message.getStatus()),
-                now,
+                now.plusSeconds(5),
                 cost,
                 currentBalance);
     }
