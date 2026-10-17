@@ -5,24 +5,27 @@ import com.example.backend.application.DTO.response.client.ClientBalanceResponse
 import com.example.backend.domain.entity.ClientEntity;
 import com.example.backend.domain.exception.ClientNotFoundException;
 import com.example.backend.domain.port.ClientRepository;
+import com.example.backend.domain.usecase.transaction.TransactionGetMonthlyConsumptionUsecase;
+import java.math.BigDecimal;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.UUID;
-
 @Service
+@RequiredArgsConstructor
 public class ClientBalanceUsecase {
 
     private final ClientRepository clientRepository;
+    private final TransactionGetMonthlyConsumptionUsecase consumptionUsecase;
 
-    public ClientBalanceUsecase(ClientRepository clientRepository) {
-        this.clientRepository = clientRepository;
-    }
+    public ClientBalanceResponseDTO execute(UUID clientId) {
+        ClientEntity client = clientRepository.findById(clientId)
+                .orElseThrow(() -> new ClientNotFoundException(clientId));
 
-    public ClientBalanceResponseDTO getBalance(UUID id) {
+        boolean prepaid = "prepaid".equalsIgnoreCase(String.valueOf(client.getPlanType()));
 
-        ClientEntity entity = clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException(id));
+        BigDecimal consumed = prepaid ? null : consumptionUsecase.execute(clientId);
 
-        return ClientApiMapper.toBalanceResponseDTO(entity);
+        return ClientApiMapper.toBalanceResponseDTO(client, consumed);
     }
 }

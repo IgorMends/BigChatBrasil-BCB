@@ -56,7 +56,7 @@ public class ClientController {
             throw new ClientNotFoundException(id);
         }
 
-        ClientBalanceResponseDTO response = clientBalanceUsecase.getBalance(id);
+        ClientBalanceResponseDTO response = clientBalanceUsecase.execute(id);
 
         return ResponseEntity.ok(response);
     }

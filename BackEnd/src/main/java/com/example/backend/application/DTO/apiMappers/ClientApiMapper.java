@@ -4,6 +4,8 @@ import com.example.backend.application.DTO.request.client.ClientSaveRequestDTO;
 import com.example.backend.application.DTO.response.client.*;
 import com.example.backend.domain.entity.ClientEntity;
 
+import java.math.BigDecimal;
+
 public class ClientApiMapper {
 
     public static ClientEntity toDomain(ClientSaveRequestDTO dto) {
@@ -37,9 +39,21 @@ public class ClientApiMapper {
                 .build();
     }
 
-    public static ClientBalanceResponseDTO toBalanceResponseDTO(ClientEntity entity) {
+    public static ClientBalanceResponseDTO toBalanceResponseDTO(ClientEntity entity, BigDecimal consumed) {
+        if (consumed == null) { // pré-pago
+            return ClientBalanceResponseDTO.builder()
+                    .planType(entity.getPlanType())
+                    .balance(entity.getBalance())
+                    .build();
+        }
+
+        BigDecimal limit = entity.getCreditLimit() == null ? BigDecimal.ZERO : entity.getCreditLimit();
+
         return ClientBalanceResponseDTO.builder()
-                .balance(entity.getBalance())
+                .planType(entity.getPlanType())
+                .creditLimit(limit)
+                .consumed(consumed)
+                .remainingLimit(limit.subtract(consumed).max(BigDecimal.ZERO))
                 .build();
     }
 
